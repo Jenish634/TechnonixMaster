@@ -2,13 +2,11 @@ import React from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-
 import loadFonts from './load-fonts';
 import NetworkHandler from './network-handler';
 
 
 function Booting(props) {
-
     useEffect(()=>{
       async function bootingAppAssets(){
         await loadFonts();
@@ -18,6 +16,7 @@ function Booting(props) {
       };
       
       bootingAppAssets();
+      
     }, []);
 
     return (
