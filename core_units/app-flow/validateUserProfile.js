@@ -1,5 +1,7 @@
 import { Actions } from 'react-native-router-flux';
+import { Alert } from 'react-native';
 import _ from 'lodash';
+import * as LocalAuthentication from "expo-local-authentication";
 
 export default function (criteria,userData) {
     // redirect to dashboard
@@ -27,7 +29,22 @@ export default function (criteria,userData) {
                 console.log('user_profile_details',data);
                 // checks the user is approved
                 if (_.size(user_profile_details)>0) {
-                    redirectuserToDashboard();
+                    async function handleAuthentication() {
+                        var bio = await LocalAuthentication.authenticateAsync();
+                        if(bio.success){
+                            redirectuserToDashboard();
+                        }
+                        else{
+                           Alert.alert("Authentication","Please unlock to access",[
+                            {
+                              text: "",
+                              style: "cancel"
+                            },
+                            { text: "OK", onPress: () =>  handleAuthentication() }
+                          ])
+                        }
+                      }
+                      handleAuthentication();
                 }else{
                     // redirectuserToProfile();
                     if (_.get(userData,'data.user')) {
@@ -39,7 +56,8 @@ export default function (criteria,userData) {
                         body:details,
                         callback: async (response, data) => {
                             console.log('response, data',response, data);
-                            if (response==true) {
+                          
+                            if (response==true) {                               
                                 criteria.dispatch(global.redux.action.account.profile())
                                 redirectuserToDashboard()    
                             }else if(_.get(data,'error')){

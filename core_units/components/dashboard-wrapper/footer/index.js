@@ -76,12 +76,12 @@ const Footer = (props) => {
 
   const render = () => {
     console.log("focused", focused);
-    if (focused == "Dashboard") {
-      async function handleAuthentication() {
-        await LocalAuthentication.authenticateAsync();
-      }
-      handleAuthentication();
-    }
+    // if (focused == "Dashboard") {
+    //   async function handleAuthentication() {
+    //     await LocalAuthentication.authenticateAsync();
+    //   }
+    //   handleAuthentication();
+    // }
     let user = _.head(_.get(props, "userProfile.data", []));
     console.log("fotter", Math.round(Dimensions.get("window").height));
 
